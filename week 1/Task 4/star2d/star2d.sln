@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task", "Task\Task.csproj", "{AC719DD3-F2E9-477B-8DCF-1BDDBBFF1968}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "star2d", "star2d\star2d.csproj", "{26081316-C6D7-434D-9CA6-6197D08E31A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AC719DD3-F2E9-477B-8DCF-1BDDBBFF1968}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AC719DD3-F2E9-477B-8DCF-1BDDBBFF1968}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AC719DD3-F2E9-477B-8DCF-1BDDBBFF1968}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AC719DD3-F2E9-477B-8DCF-1BDDBBFF1968}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26081316-C6D7-434D-9CA6-6197D08E31A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26081316-C6D7-434D-9CA6-6197D08E31A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26081316-C6D7-434D-9CA6-6197D08E31A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26081316-C6D7-434D-9CA6-6197D08E31A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {05977C1E-3DCE-4D91-BD4A-125B4DD98783}
+		SolutionGuid = {0E6B15FC-6712-4D7A-A9B0-2A4BAFF38E05}
 	EndGlobalSection
 EndGlobal

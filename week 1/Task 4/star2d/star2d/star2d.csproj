@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AC719DD3-F2E9-477B-8DCF-1BDDBBFF1968}</ProjectGuid>
+    <ProjectGuid>{26081316-C6D7-434D-9CA6-6197D08E31A0}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Task</RootNamespace>
-    <AssemblyName>Task</AssemblyName>
+    <RootNamespace>star2d</RootNamespace>
+    <AssemblyName>star2d</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
