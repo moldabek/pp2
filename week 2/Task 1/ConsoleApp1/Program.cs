@@ -9,9 +9,9 @@ namespace ConsoleApp1
     
     class Program
     {
-        public static  bool Palindrom(string s)// создаем функцию которая проверяет на полиндромность  
+        public static  bool Palindrom(string s)// создаем метод которая проверяет на палиндромность  
         {
-           for(int i=0;i<s.Length / 2; i++)//пробегаемся фориком чтобы проверить
+           for(int i=0;i<s.Length; i++)//пробегаемся фориком чтобы проверить
             {
                 if (s[i] != s[s.Length - i - 1])// сама проверка
                 {
@@ -24,7 +24,7 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             
-            //string s = Console.ReadLine();//считивние строк с консоли
+            string s = Console.ReadLine();//считивние строк с консоли
             if (!Palindrom(s))//проверка строки  через функцию     
             {
                 Console.WriteLine("NO");
