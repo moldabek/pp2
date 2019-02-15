@@ -58,7 +58,6 @@ namespace Far_Manager
             DirectoryInfo[] dir = directory.GetDirectories();
             FileInfo[] fil = directory.GetFiles();
             List<FileSystemInfo> FileSystemInfos = new List<FileSystemInfo>();
-            //FileSystemInfo[] FileSystemInfos = directory.GetFileSystemInfos();
             int index = 0;
             foreach (DirectoryInfo di in dir)
             {
@@ -94,7 +93,6 @@ namespace Far_Manager
                 DirectoryInfo[] dir = directory.GetDirectories();
                 FileInfo[] fil = directory.GetFiles();
                 List<FileSystemInfo> FileSystemInfos = new List<FileSystemInfo>();
-                //FileSystemInfo[] FileSystemInfos = directory.GetFileSystemInfos();
                 int index = 0;
                 foreach (DirectoryInfo di in dir)
                 {
@@ -111,9 +109,16 @@ namespace Far_Manager
                 consoleKey = Console.ReadKey();
                 if (consoleKey.Key == ConsoleKey.Escape)
                 {
-                    cursor = 0;
-                    directory = directory.Parent;
-                    path = directory.FullName;
+                    try
+                    {
+                        cursor = 0;
+                        directory = directory.Parent;
+                        path = directory.FullName;
+                    }
+                    catch
+                    {
+                        continue;
+                    }
                 }
                 if (consoleKey.Key == ConsoleKey.UpArrow)
                     Up();
@@ -157,8 +162,6 @@ namespace Far_Manager
                 }
                 if (consoleKey.Key == ConsoleKey.Delete)
                 {
-                    //Console.Clear();
-                    //Console.WriteLine("Check");
                     int kk = 0;
                     for (int i = 0; i < FileSystemInfos.Count; i++)
                     {
@@ -171,8 +174,6 @@ namespace Far_Manager
                         }
                         kk++;
                     }
-                    //Console.Clear();
-                    //Console.WriteLine(fs.FullName);
 
                     if (fs.GetType() == typeof(DirectoryInfo))
                     {
@@ -225,7 +226,7 @@ namespace Far_Manager
         static void Main(string[] args)
         {
             FarManager far = new FarManager();
-            far.Start(" /Users/Бейбарыс/Desktop/PP2");
+            far.Start("/Users/Бейбарыс/Desktop/PP2");
 
         }
     }
