@@ -5,23 +5,33 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Far_Manager
+namespace lab3
 {
     class FarManager
     {
-        public bool ok = true;
-        public int cursor;
-        int sz = 0;
-        public FarManager()
+        public int cursor; //Создание переменных
+        public string path;
+        public int size;
+        public bool ok;
+        DirectoryInfo directory = null;
+        FileSystemInfo currentFs = null;
+
+        public FarManager(string path) //придаем значенние созданным переменным 
         {
+            this.path = path;
             cursor = 0;
+            directory = new DirectoryInfo(path);
+            size = directory.GetFileSystemInfos().Length;
+            ok = true;
         }
-        public void Color(FileSystemInfo fs, int index)
+
+        public void Color(FileSystemInfo fs, int index)//Указываем применяемые цвета в разных случаях. Файл папка или наведен курсор 
         {
-            if (index == cursor)
+            if (cursor == index)
             {
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Black;
+                currentFs = fs;
             }
             else if (fs.GetType() == typeof(DirectoryInfo))
             {
@@ -34,200 +44,127 @@ namespace Far_Manager
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
         }
+
+        public void Show()//Показывает файлы и папки, обновляет консоль, чекает скрытые файлы 
+        {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Clear();
+            directory = new DirectoryInfo(path);
+            FileSystemInfo[] fs = directory.GetFileSystemInfos();
+            for (int i = 0, k = 0,j = 1; i < fs.Length; i++,j++)
+            {
+                if (ok == false && fs[i].Name[0] == '.')
+                {
+                    j = 0;
+                    continue;
+                }
+                Color(fs[i], k);
+                Console.WriteLine(j+"."+" "+fs[i].Name);
+                k++;
+            }
+        }
         public void Up()
         {
             cursor--;
             if (cursor < 0)
-            {
-                cursor = sz - 1;
-
-            }
+                cursor = size - 1;
         }
         public void Down()
         {
             cursor++;
-            if (cursor == sz)
-            {
+            if (cursor == size)
                 cursor = 0;
-
-            }
         }
-        public void Show(string path)
+
+
+        public void Calc() //Изменяет размер массива с дайректориями взависимости скрытых файлов 
         {
-            DirectoryInfo directory = new DirectoryInfo(path);
-            DirectoryInfo[] dir = directory.GetDirectories();
-            FileInfo[] fil = directory.GetFiles();
-            List<FileSystemInfo> FileSystemInfos = new List<FileSystemInfo>();
-            int index = 0;
-            foreach (DirectoryInfo di in dir)
-            {
-                FileSystemInfos.Add(di);
-            }
-            foreach (FileSystemInfo fi in fil)
-            {
-                FileSystemInfos.Add(fi);
-            }
-            sz = FileSystemInfos.Count;
-
-
-            foreach (FileSystemInfo fs in FileSystemInfos)
-            {
-                if (ok && fs.Name.StartsWith("."))
-                {
-                    sz--;
-                    continue;
-                }
-                this.Color(fs, index);
-                Console.WriteLine((index + 1) + ". " + fs.Name);
-                index++;
-            }
+            directory = new DirectoryInfo(path);
+            FileSystemInfo[] fs = directory.GetFileSystemInfos();
+            size = fs.Length;
+            if (ok == false)
+                for (int i = 0; i < fs.Length; i++)
+                    if (fs[i].Name[0] == '.')
+                        size--;
         }
-        public void Start(string path)
+        public void Start()// Основная функция где проходит процессы 
         {
-            ConsoleKeyInfo consoleKey = Console.ReadKey();
-            FileSystemInfo fs = null;
-
-            while (true)
+            ConsoleKeyInfo ck = Console.ReadKey();
+            while (ck.Key != ConsoleKey.Escape)
             {
-                DirectoryInfo directory = new DirectoryInfo(path);
-                DirectoryInfo[] dir = directory.GetDirectories();
-                FileInfo[] fil = directory.GetFiles();
-                List<FileSystemInfo> FileSystemInfos = new List<FileSystemInfo>();
-                int index = 0;
-                foreach (DirectoryInfo di in dir)
-                {
-                    FileSystemInfos.Add(di);
-                }
-                foreach (FileSystemInfo fi in fil)
-                {
-                    FileSystemInfos.Add(fi);
-                }
-
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.Clear();
-                Show(path);
-                consoleKey = Console.ReadKey();
-                if (consoleKey.Key == ConsoleKey.Escape)
-                {
-                    try
-                    {
-                        cursor = 0;
-                        directory = directory.Parent;
-                        path = directory.FullName;
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-                }
-                if (consoleKey.Key == ConsoleKey.UpArrow)
+                Calc();
+                Show();
+                ck = Console.ReadKey();
+                if (ck.Key == ConsoleKey.UpArrow)
                     Up();
-                if (consoleKey.Key == ConsoleKey.DownArrow)
+                if (ck.Key == ConsoleKey.DownArrow)
                     Down();
-                if (consoleKey.Key == ConsoleKey.RightArrow)
-                    ok = false;
-                if (consoleKey.Key == ConsoleKey.LeftArrow)
-                    ok = true;
-                if (consoleKey.Key == ConsoleKey.Enter)
+                if (ck.Key == ConsoleKey.RightArrow)
                 {
-                    int k = 0;
-                    for (int i = 0; i < FileSystemInfos.Count; i++)
-                    {
-                        if (ok && FileSystemInfos[i].Name.StartsWith("."))
-                            continue;
-                        if (cursor == k)
-                        {
-                            fs = FileSystemInfos[i];
-                            break;
-                        }
-                        k++;
-                    }
-                    if (fs.GetType() == typeof(DirectoryInfo))
+                    ok = false;
+                    cursor = 0;
+                }
+                if (ck.Key == ConsoleKey.LeftArrow)
+                {
+                    ok = true;
+                    cursor = 0;
+                }
+                if (ck.Key == ConsoleKey.Enter)
+                {
+                    if (currentFs.GetType() == typeof(DirectoryInfo))
                     {
                         cursor = 0;
-                        directory = new DirectoryInfo(fs.FullName);
-                        path = fs.FullName;
-                    }
-                    else if (fs.GetType() == typeof(FileInfo))
-                    {
-                        StreamReader sr = new StreamReader(fs.FullName);
-                        string s = sr.ReadToEnd();
-                        Console.Clear();
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine(s);
-                        Console.ReadKey();
-
+                        path = currentFs.FullName;
                     }
                 }
-                if (consoleKey.Key == ConsoleKey.Delete)
+                if (ck.Key == ConsoleKey.Backspace)
                 {
-                    int kk = 0;
-                    for (int i = 0; i < FileSystemInfos.Count; i++)
-                    {
-                        if (ok && FileSystemInfos[i].Name.StartsWith("."))
-                            continue;
-                        if (cursor == kk)
-                        {
-                            fs = FileSystemInfos[i];
-                            break;
-                        }
-                        kk++;
-                    }
-
-                    if (fs.GetType() == typeof(DirectoryInfo))
-                    {
-                        (fs as DirectoryInfo).Delete(true);
-                    }
-                    else if (fs.GetType() == typeof(FileInfo))
-                    {
-                        (fs as FileInfo).Delete();
-                    }
+                    cursor = 0;
+                    path = directory.Parent.FullName;
                 }
-                if (consoleKey.Key == ConsoleKey.F4)
+                if (ck.Key == ConsoleKey.Delete)
                 {
-                    int kk = 0;
-                    for (int i = 0; i < FileSystemInfos.Count; i++)
+                    string path1 = currentFs.FullName; //Записываем полную дайректорию файла
+                    if (currentFs.GetType() == typeof(DirectoryInfo))//Удаляем в зависимости папка это или файл 
                     {
-                        if (ok && FileSystemInfos[i].Name.StartsWith("."))
-                            continue;
-                        if (cursor == kk)
-                        {
-                            fs = FileSystemInfos[i];
-                            break;
-                        }
-                        kk++;
-                    }
-                    Console.Clear();
-
-                    Console.BackgroundColor = ConsoleColor.White;
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    string s = Console.ReadLine();
-                    if (fs.GetType() == typeof(DirectoryInfo))
-                    {
-                        string full = fs.FullName;
-                        full = full.Remove(full.Length - fs.Name.Length);
-                        new DirectoryInfo(fs.FullName).MoveTo(full + s);
+                        Directory.Delete(path1, true);
                     }
                     else
                     {
-                        string full = fs.FullName;
-                        full = full.Remove(full.Length - fs.Name.Length);
-                        new FileInfo(fs.FullName).MoveTo(full + s);
+                        File.Delete(path1);
+                    }
+                }
+                if (ck.Key == ConsoleKey.R)
+                {
+                    string path1 = directory.FullName;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.Clear();
+                    Console.WriteLine("Create new name");
+                    string name = Console.ReadLine();
+                    if (currentFs.GetType() == typeof(FileInfo))
+                    {
+                        string sourcefile = currentFs.FullName;
+                        string destfile = path1 + @"\" + name;
+                        File.Move(sourcefile, destfile);
+                    }
+                    else
+                    if (currentFs.GetType() == typeof(DirectoryInfo))
+                    {
+                        string sourcedir = currentFs.FullName;
+                        string destdir = Path.Combine(path1, name);
+                        Directory.Move(sourcedir, destdir);
                     }
                 }
             }
         }
     }
-
-
     class Program
     {
         static void Main(string[] args)
         {
-            FarManager far = new FarManager();
-            far.Start("/Users/Бейбарыс/Desktop/PP2");
-
+            string path = "/Users/Бейбарыс/Desktop/PP2";
+            FarManager fm = new FarManager(path);
+            fm.Start();
         }
     }
 }
