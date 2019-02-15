@@ -1,11 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp1
+
+namespace Task3
 {
     class Program
     {
@@ -16,25 +13,25 @@ namespace ConsoleApp1
         }
 
 
-            public static void Ex5(DirectoryInfo dir, int level)
+            public static void Direct(DirectoryInfo path, int level)
         {
-            foreach (FileInfo f in dir.GetFiles())
+            foreach (FileInfo f in path.GetFiles())
             {
                 PrintSpaces(level);
                 Console.WriteLine(f.Name);
             }
-            foreach (DirectoryInfo d in dir.GetDirectories())
+            foreach (DirectoryInfo d in path.GetDirectories())
             {
                 PrintSpaces(level);
                 Console.WriteLine(d.Name);
-                Ex5(d, level + 1);
+                Direct(d, level + 1);
             }
         }
 
-        static void Main(string[] args)
+        static void Main()
         {
-            DirectoryInfo dir = new DirectoryInfo("/Users/Бейбарыс/Desktop/флешка Дархана");
-           Ex5(dir, 0);
+            DirectoryInfo path = new DirectoryInfo("/Users/Бейбарыс/Desktop/флешка Дархана");
+           Direct(path, 0);
             Console.ReadLine();
         }
     }

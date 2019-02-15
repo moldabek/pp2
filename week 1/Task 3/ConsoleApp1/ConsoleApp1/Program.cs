@@ -1,27 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace Task3
 {
     class Program
     {
-        static void Main(string[] args)
+        static void MyDirectoryTree(DirectoryInfo path, int lvl)
         {
-            int n = int.Parse(Console.ReadLine());//с консоли вводим длину для нашего массива
-            int[] ar = new int[n];//создаем массив
-            string[] s = Console.ReadLine().Split();//строка для нашего массива
-            for(int i = 0; i < ar.Length; i++)//пробегаемся по массиву чтобы превратить все string-овые числа в int-овые
+            FileInfo[] files = path.GetFiles();
+            DirectoryInfo[] directories =path.GetDirectories();
+
+            foreach (DirectoryInfo direct in directories)
             {
-                ar[i] = int.Parse(s[i]);
+                for (int i = 0; i < lvl; ++i)
+                    Console.Write();
+                Console.WriteLine(direct.Name);
+                MyDirectoryTree(direct, lvl + 3);
             }
-            for(int i = 0; i < ar.Length; i++)//пробегаемся чтобы дублировать числа
+            foreach (FileInfo file in files)
             {
-                Console.Write("{0} {0} ", ar[i]);//"{0} {0} " отвечает за дублирование
+                for (int i = 0; i < lvl; ++i)
+                    Console.Write();
+                Console.WriteLine(file.Name);
             }
-           Console.ReadLine();
+
+        }
+        static void Main()
+        {
+            DirectoryInfo path = new DirectoryInfo("C:/Users/Бейбарыс/Desktop/PP2");
+            MyDirectoryTree(path, 0);
+            Console.ReadLine();
         }
     }
 }
