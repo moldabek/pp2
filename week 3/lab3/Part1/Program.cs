@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace lab3
@@ -44,24 +41,36 @@ namespace lab3
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
         }
-
         public void Show()//Показывает файлы и папки, обновляет консоль, чекает скрытые файлы 
         {
             Console.BackgroundColor = ConsoleColor.Black;
             Console.Clear();
             directory = new DirectoryInfo(path);
-            FileSystemInfo[] fs = directory.GetFileSystemInfos();
-            for (int i = 0, k = 0,j = 1; i < fs.Length; i++,j++)
+            DirectoryInfo[] dir = directory.GetDirectories();
+            FileInfo[] fil = directory.GetFiles();
+            List<FileSystemInfo> FileSystemInfos = new List<FileSystemInfo>();
+            foreach (DirectoryInfo di in dir)
             {
-                if (ok == false && fs[i].Name[0] == '.')
+                FileSystemInfos.Add(di);
+            }
+            foreach(FileInfo fi in fil)
+            {
+
+                FileSystemInfos.Add(fi);
+            }
+
+            for (int i = 0, k = 0,j = 1; i <FileSystemInfos.Count; i++,j++)
+            {
+                if (ok == false && FileSystemInfos[i].Name[0] == '.')
                 {
                     j = 0;
                     continue;
                 }
-                Color(fs[i], k);
-                Console.WriteLine(j+"."+" "+fs[i].Name);
+                Color(FileSystemInfos[i], k);
+                Console.WriteLine(j+"."+" "+ FileSystemInfos[i].Name);
                 k++;
             }
+            
         }
         public void Up()
         {
@@ -160,7 +169,7 @@ namespace lab3
     }
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             string path = "/Users/Бейбарыс/Desktop/PP2";
             FarManager fm = new FarManager(path);
