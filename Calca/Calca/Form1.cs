@@ -28,12 +28,12 @@ namespace Calca
 
         private void button_click(object sender, EventArgs e)
         {
-            if (textBox_Result.Text == "0" || (isOperattionPerfomed))
-                textBox_Result.Clear();
+          //  if (textBox_Result.Text == "0" || (isOperattionPerfomed))
+            //    textBox_Result.Clear();
 
-            isOperattionPerfomed = false;
-            Button button = (Button)sender;
-            textBox_Result.Text = textBox_Result.Text + button.Text;    
+            //isOperattionPerfomed = false;
+            //Button button = (Button)sender;
+            //textBox_Result.Text = textBox_Result.Text + button.Text;    
         }
 
         private void operator_click(object sender, EventArgs e)
